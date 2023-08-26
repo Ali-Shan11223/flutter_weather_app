@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../components/additional_info.dart';
 import '../components/weather_forecast_item.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import '../services.dart';
 
@@ -26,12 +27,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
         throw 'An unexpected error has occured';
       }
       return data;
-      // if (response.statusCode == 200) {
-      //   final data = jsonDecode(response.body);
-      //   return data;
-      // } else {
-      //   throw 'An unexpected error has occured';
-      // }
     } catch (e) {
       throw e.toString();
     }
@@ -53,7 +48,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.refresh))
+          IconButton(
+              onPressed: () {
+                setState(() {});
+              },
+              icon: const Icon(Icons.refresh))
         ],
       ),
       body: FutureBuilder(
@@ -136,11 +135,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           physics: const BouncingScrollPhysics(),
-                          itemCount: 5,
+                          itemCount: 20,
                           itemBuilder: (context, index) {
                             final forecastItem = data['list'][index + 1];
+                            final time = DateTime.parse(
+                                forecastItem['dt_txt'].toString());
                             return WeatherForecastItem(
-                              time: forecastItem['dt'].toString(),
+                              time: DateFormat.j().format(time),
                               icon: forecastItem['weather'][0]['main'] ==
                                           'Clouds' ||
                                       forecastItem['weather'][0]['main'] ==
@@ -151,26 +152,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   .toString(),
                             );
                           })),
-                  // SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   physics: const BouncingScrollPhysics(),
-                  //   child: Row(
-                  //     children: [
-                  //       for (int i = 0; i < 5; i++)
-                  //         WeatherForecastItem(
-                  //             time: data['list'][i + 1]['dt'].toString(),
-                  //             icon: data['list'][i + 1]['weather'][0]['main'] ==
-                  //                         'Clouds' ||
-                  //                     data['list'][i + 1]['weather'][0]
-                  //                             ['main'] ==
-                  //                         'Rain'
-                  //                 ? Icons.cloud
-                  //                 : Icons.sunny,
-                  //             temp: data['list'][i + 1]['main']['temp']
-                  //                 .toString()),
-                  //     ],
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 20,
                   ),
