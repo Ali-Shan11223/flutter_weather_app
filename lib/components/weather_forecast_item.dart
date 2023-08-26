@@ -4,9 +4,8 @@ class WeatherForecastItem extends StatelessWidget {
   final String time;
   final IconData icon;
   final String temp;
-  const WeatherForecastItem({
-    super.key, required this.time, required this.icon, required this.temp
-  });
+  const WeatherForecastItem(
+      {super.key, required this.time, required this.icon, required this.temp});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +20,8 @@ class WeatherForecastItem extends StatelessWidget {
             Text(
               time,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(
               height: 8,

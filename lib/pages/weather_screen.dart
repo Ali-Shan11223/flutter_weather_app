@@ -131,19 +131,46 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   const SizedBox(
                     height: 14,
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    child: Row(
-                      children: [
-                        for (int i = 0; i < 5; i++)
-                          WeatherForecastItem(
-                              time: data['list'][0 + 1]['dt'].toString(),
-                              icon: Icons.cloud,
-                              temp: '300.21'),
-                      ],
-                    ),
-                  ),
+                  SizedBox(
+                      height: 120,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            final forecastItem = data['list'][index + 1];
+                            return WeatherForecastItem(
+                              time: forecastItem['dt'].toString(),
+                              icon: forecastItem['weather'][0]['main'] ==
+                                          'Clouds' ||
+                                      forecastItem['weather'][0]['main'] ==
+                                          'Rain'
+                                  ? Icons.cloud
+                                  : Icons.sunny,
+                              temp: data['list'][index + 1]['main']['temp']
+                                  .toString(),
+                            );
+                          })),
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   physics: const BouncingScrollPhysics(),
+                  //   child: Row(
+                  //     children: [
+                  //       for (int i = 0; i < 5; i++)
+                  //         WeatherForecastItem(
+                  //             time: data['list'][i + 1]['dt'].toString(),
+                  //             icon: data['list'][i + 1]['weather'][0]['main'] ==
+                  //                         'Clouds' ||
+                  //                     data['list'][i + 1]['weather'][0]
+                  //                             ['main'] ==
+                  //                         'Rain'
+                  //                 ? Icons.cloud
+                  //                 : Icons.sunny,
+                  //             temp: data['list'][i + 1]['main']['temp']
+                  //                 .toString()),
+                  //     ],
+                  //   ),
+                  // ),
                   const SizedBox(
                     height: 20,
                   ),
