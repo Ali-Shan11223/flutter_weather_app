@@ -2,9 +2,30 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../components/additional_info.dart';
 import '../components/weather_forecast_item.dart';
+import 'package:http/http.dart' as http;
 
-class WeatherScreen extends StatelessWidget {
+import '../services.dart';
+
+class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
+
+  @override
+  State<WeatherScreen> createState() => _WeatherScreenState();
+}
+
+class _WeatherScreenState extends State<WeatherScreen> {
+  Future getCurrentWeather() async {
+    String countryName = 'London';
+    final result = await http.get(Uri.parse(
+        'https://api.openweathermap.org/data/2.5/forecast?q=$countryName&APPID=$weatherAPIKey'));
+    print(result.body);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentWeather();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +60,7 @@ class WeatherScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            '300.67°F',
+                            '300.67K',
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
